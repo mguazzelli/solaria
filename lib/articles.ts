@@ -1,19 +1,29 @@
-import fs from 'fs';
-import path from 'path';
+'use server';
+import * as fs from 'fs';
+import * as path from 'path';
 
-// O caminho corrigido para a pasta cms/migrated agora que estamos na raiz
 const ARTICLES_PATH = path.join(process.cwd(), 'apps/cms/migrated');
 
-export function getArticleSlugs() {
+export async function getArticleSlugs() {
   if (!fs.existsSync(ARTICLES_PATH)) return [];
   return fs.readdirSync(ARTICLES_PATH).map(file => file.replace('.json', ''));
 }
 
-export function getArticleBySlug(slug: string) {
+export async function getArticleBySlug(slug: string) {
   const fullPath = path.join(ARTICLES_PATH, `${slug}.json`);
-  return JSON.parse(fs.readFileSync(fullPath, 'utf8'));
+  const data = JSON.parse(fs.readFileSync(fullPath, 'utf8'));
+  data.views = data.views || Math.floor(Math.random() * 1000);
+  return data;
 }
 
-export function getAllArticles() {
-  return getArticleSlugs().map(slug => getArticleBySlug(slug));
+export async function incrementView(slug: string) {
+  const fullPath = path.join(ARTICLES_PATH, `${slug}.json`);
+  const data = JSON.parse(fs.readFileSync(fullPath, 'utf8'));
+  data.views = (data.views || 0) + 1;
+  fs.writeFileSync(fullPath, JSON.stringify(data, null, 2));
+}
+
+export async function getAllArticles() {
+  const slugs = await getArticleSlugs();
+  return Promise.all(slugs.map(slug => getArticleBySlug(slug)));
 }
