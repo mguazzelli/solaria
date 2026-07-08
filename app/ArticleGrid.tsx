@@ -1,12 +1,13 @@
 'use client';
 import { useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 
-export default function ArticleGrid({ initialArticles }: { initialArticles: any[] }) {
+export default function ArticleGrid({ initialArticles }: { initialArticles: { slug: string, title: string, category: string, mainImage: string, author: string, isHighlighted: boolean, date?: string }[] }) {
   const [search, setSearch] = useState('');
   
   const filtered = [...initialArticles].sort((a, b) => 
-    new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime()
+    new Date(b.date || 0).getTime() - new Date(a.date || 0).getTime()
   ).filter(a => 
     a.title?.toLowerCase().includes(search.toLowerCase()) || 
     a.category?.toLowerCase().includes(search.toLowerCase())
@@ -26,21 +27,40 @@ export default function ArticleGrid({ initialArticles }: { initialArticles: any[
         </div>
       </header>
       
-      <div className="max-w-5xl mx-auto px-6 py-12">
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <main className="max-w-5xl mx-auto px-6 py-12">
+        {/* Hero Section */}
+        {initialArticles.some(a => a.isHighlighted) && (
+          <section className="bg-teal-900 text-white py-16 mb-12">
+            <div className="max-w-5xl mx-auto px-6">
+              {initialArticles.filter(a => a.isHighlighted).map((article) => (
+                <article key={article.slug}>
+                  <span className="text-sm uppercase tracking-widest text-teal-300">Destaque</span>
+                  <h2 className="text-4xl font-serif mt-2 mb-6">{article.title}</h2>
+                  <Link href={`/blog/${article.slug}`} className="bg-white text-teal-900 px-6 py-3 rounded-lg font-bold">
+                    Ler artigo
+                  </Link>
+                </article>
+              ))}
+            </div>
+          </section>
+        )}
+        
+        <section className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {filtered.map((article) => (
-            <Link key={article.slug || 'slug'} href={`/blog/${article.slug || 'slug'}`} 
-                  className="bg-white p-6 rounded-xl border border-gray-100 shadow-sm hover:shadow-md transition-all">
-              {article.mainImage && (
-                <img src={article.mainImage} alt={article.title} className="w-full h-40 object-cover rounded-lg mb-4" />
-              )}
-              <span className="text-xs font-bold text-teal-600 uppercase">{article.category}</span>
-              <h2 className="text-lg font-bold mt-2 mb-4 font-serif">{article.title}</h2>
-              <div className="text-sm text-gray-400 border-t pt-4">{article.author}</div>
-            </Link>
+            <article key={article.slug || 'slug'}>
+              <Link href={`/blog/${article.slug || 'slug'}`} 
+                    className="bg-white p-6 rounded-xl border border-gray-100 shadow-sm hover:shadow-md transition-all block">
+                {article.mainImage && (
+                  <Image src={article.mainImage.startsWith('/') ? article.mainImage : `/${article.mainImage}`} alt={`Capa do artigo: ${article.title}`} width={400} height={160} className="w-full h-40 object-cover rounded-lg mb-4" />
+                )}
+                <span className="text-xs font-bold text-teal-600 uppercase">{article.category}</span>
+                <h3 className="text-lg font-bold mt-2 mb-4 font-serif">{article.title}</h3>
+                <footer className="text-sm text-gray-400 border-t pt-4">{article.author}</footer>
+              </Link>
+            </article>
           ))}
-        </div>
-      </div>
+        </section>
+      </main>
     </>
   );
 }

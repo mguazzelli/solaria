@@ -1,25 +1,25 @@
 # Portal Solaria - Documentação Técnica
 
-## Capítulo 1: Arquitetura e Configurações do Portal
-Este capítulo descreve a estrutura de infraestrutura, roteamento e integração de dados do portal principal.
+## Capítulo 1: Arquitetura e Configurações
+- **Frontend:** Next.js 16 (Turbopack).
+- **Backend:** CMS de arquivos JSON em D:/Solaria_Data/migrated_articles/.
 
-### 1.1 Visão Geral
-Portal de conteúdo da Solaria, construído com **Next.js** (App Router) e CMS baseado em arquivos JSON locais.
+## Capítulo 2: Painel Administrativo (/admin)
+- **Criação de Posts:** Rota /admin/new disponível.
+- **Estrutura:** Usa Server Actions para persistência direta em JSON.
 
-### 1.2 Configurações de Dados
-Os artigos são processados a partir da unidade `D:`, garantindo separação entre código (C:) e conteúdo (D:).
+## Capítulo 3: Mensuração e Métricas
+- **Views:** Incremento automático via lib/articles.ts.
+- **Admin Dashboard:** Exibe total de acessos por post.
 
-- **Caminho dos Dados:** `/d/Solaria_Data/migrated_articles/`
-- **Frontend:** Next.js (Server Components)
-- **Integração:** `lib/articles.ts` realiza a leitura, parse e incremento de visualizações dos arquivos JSON.
+## Capítulo 4: Design e Identidade (Premium Revista)
+- **Tipografia:** Serif para títulos (Autoridade), Sans-Serif para leitura.
+- **Paleta:** Tons de Teal (Confiança/Saúde).
 
-### 1.3 Guia de Manutenção
-- Se o portal não carregar artigos, verificar a existência e permissão da pasta de dados em `D:`.
-- Logs de erro são injetados em `lib/` para facilitar o diagnóstico de falhas de I/O.
+## Capítulo 5: Newsletter e Automação
+- **Lead Capture:** CSV em D:/Solaria_Data/CRM/leads.csv.
+- **Invictus Editor:** Cronjob agendado (09:00, Ter/Qui) para drafts em D:/Solaria_Data/newsletter_drafts/.
 
----
-
-## Próximas Tarefas (Log)
-- [ ] Implementar logs robustos em `lib/articles.ts`.
-- [ ] Ajustar `ARTICLES_PATH` para o caminho correto em `D:`.
-- [ ] Segregar documentação de outros módulos (ex: Clínica Tatibana, Sistema de CRM) em novos capítulos conforme forem desenvolvidos.
+## Capítulo 6: Manual de Uso do Administrador
+1. **Publicar Artigo:** Acesse /admin/new, preencha os campos e salve. O sistema gera o JSON na pasta de dados.
+2. **Consultar Leads:** Verifique o arquivo /d/Solaria_Data/CRM/leads.csv periodicamente.

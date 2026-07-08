@@ -1,0 +1,22 @@
+{
+  "ads": [
+    {
+      "id": "home-banner-top",
+      "location": "home",
+      "position": "top",
+      "type": "banner"
+    },
+    {
+      "id": "post-middle-1",
+      "location": "post",
+      "position": "after-paragraph-2",
+      "type": "in-article"
+    },
+    {
+      "id": "post-middle-2",
+      "location": "post",
+      "position": "after-paragraph-5",
+      "type": "in-article"
+    }
+  ]
+}
