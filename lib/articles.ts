@@ -1,8 +1,8 @@
 import fs from 'fs';
 import path from 'path';
 
-// O caminho precisa ser ajustado para subir do app/web até a pasta apps/cms/migrated
-const ARTICLES_PATH = path.join(process.cwd(), '../cms/migrated');
+// O caminho corrigido para a pasta cms/migrated agora que estamos na raiz
+const ARTICLES_PATH = path.join(process.cwd(), 'apps/cms/migrated');
 
 export function getArticleSlugs() {
   if (!fs.existsSync(ARTICLES_PATH)) return [];
