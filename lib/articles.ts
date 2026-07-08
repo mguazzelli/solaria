@@ -2,7 +2,7 @@
 import * as fs from 'fs';
 import * as path from 'path';
 
-const ARTICLES_PATH = path.join(process.cwd(), 'apps/cms/migrated');
+const ARTICLES_PATH = path.join(process.cwd(), 'cms/migrated');
 
 export async function getArticleSlugs() {
   if (!fs.existsSync(ARTICLES_PATH)) return [];
