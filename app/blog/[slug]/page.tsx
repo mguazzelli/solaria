@@ -1,8 +1,18 @@
 import { getArticleBySlug } from '@/lib/articles';
 import Link from 'next/link';
+import { notFound } from 'next/navigation';
 
-export default async function ArticlePage({ params }: { params: { slug: string } }) {
-  const article = getArticleBySlug(params.slug);
+export default async function ArticlePage({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
+  const { slug } = await params;
+  const article = await getArticleBySlug(slug);
+
+  if (!article) {
+    notFound();
+  }
 
   return (
     <main className="min-h-screen bg-white text-gray-900">
@@ -11,8 +21,8 @@ export default async function ArticlePage({ params }: { params: { slug: string }
         <h1 className="text-4xl font-serif font-bold mb-6">{article.title}</h1>
         
         <div className="prose prose-lg prose-teal max-w-none text-gray-700">
-          {article.content.map((block: any, i: number) => (
-            <p key={i} className="mb-6">{block.children[0].text}</p>
+          {article.content?.map((block: any, i: number) => (
+            <p key={i} className="mb-6">{block.children?.[0]?.text}</p>
           ))}
         </div>
 
