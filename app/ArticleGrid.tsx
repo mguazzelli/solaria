@@ -29,7 +29,7 @@ export default function ArticleGrid({ initialArticles }: { initialArticles: any[
       <div className="max-w-5xl mx-auto px-6 py-12">
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {filtered.map((article) => (
-            <Link key={article.slug.current} href={`/blog/${article.slug.current}`} 
+            <Link key={article.slug || 'slug'} href={`/blog/${article.slug || 'slug'}`} 
                   className="bg-white p-6 rounded-xl border border-gray-100 shadow-sm hover:shadow-md transition-all">
               {article.mainImage && (
                 <img src={article.mainImage} alt={article.title} className="w-full h-40 object-cover rounded-lg mb-4" />
